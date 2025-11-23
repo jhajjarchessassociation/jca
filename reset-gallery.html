@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Reset Gallery Data (V2) - JCA</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        button {
+            background: #d4af37;
+            color: #000;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #f0c040;
+        }
+
+        .info {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .success {
+            color: #4caf50;
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        pre {
+            background: #000;
+            padding: 15px;
+            border-radius: 5px;
+            overflow: auto;
+            max-height: 400px;
+            color: #0f0;
+            font-family: 'Consolas', monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🔧 JCA Gallery Data Reset (V2)</h1>
+    <p>This utility resets the gallery data to the new array-based structure (V2) which supports ordering.</p>
+
+    <div class="info">
+        <p><strong>Current Gallery Data (jca_gallery_v2):</strong></p>
+        <pre id="currentData">Loading...</pre>
+    </div>
+
+    <button onclick="resetGalleryData()">Reset to Default (4 Tournaments)</button>
+    <button onclick="clearAllData()" style="background: #ff4444; color: white;">Clear All Data</button>
+    <button onclick="location.reload()" style="background: #444; color: white;">Refresh Page</button>
+
+    <div id="message" class="success"></div>
+
+    <div style="margin-top: 30px; display: flex; gap: 20px;">
+        <a href="admin/manage-gallery.html"
+            style="color: #d4af37; text-decoration: none; border: 1px solid #d4af37; padding: 10px 20px; border-radius: 5px;">→
+            Go to Admin Gallery</a>
+        <a href="gallery.html"
+            style="color: #d4af37; text-decoration: none; border: 1px solid #d4af37; padding: 10px 20px; border-radius: 5px;">→
+            Go to Public Gallery</a>
+    </div>
+
+    <script>
+        // Display current data
+        function showCurrentData() {
+            const data = localStorage.getItem('jca_gallery_v2');
+            document.getElementById('currentData').textContent = data ? JSON.stringify(JSON.parse(data), null, 2) : 'No V2 data found (null)';
+        }
+
+        // Reset to default
+        function resetGalleryData() {
+            const defaultGalleryData = [
+                {
+                    id: 1,
+                    name: "District Championship 2024",
+                    photos: [
+                        { id: 101, url: "https://images.unsplash.com/photo-1529699211952-734e80c4d42b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", caption: "Opening Ceremony" },
+                        { id: 102, url: "https://images.unsplash.com/photo-1586165368502-1bad197a6461?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", caption: "Final Match" },
+                        { id: 103, url: "https://images.unsplash.com/photo-1560174038-da43ac74f01b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", caption: "Prize Distribution" },
+                        { id: 104, url: "https://images.unsplash.com/photo-1611195974226-ef4f6ab0f4e9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", caption: "Group Photo" }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: "Summer Rapid 2024",
+                    photos: [
+                        { id: 201, url: "https://images.unsplash.com/photo-1580541832626-2a7131ee809f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", caption: "Intense Game" },
+                        { id: 202, url: "https://images.unsplash.com/photo-1528819622765-d6bcf132f793?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", caption: "Winner" },
+                        { id: 203, url: "https://images.unsplash.com/photo-1604078883732-725b6c2f0e30?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", caption: "Participants" }
+                    ]
+                },
+                {
+                    id: 3,
+                    name: "Winter Blitz Cup 2023",
+                    photos: [
+                        { id: 301, url: "https://images.unsplash.com/photo-1609710228159-0fa9bd7c0827?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", caption: "Tournament Hall" },
+                        { id: 302, url: "https://images.unsplash.com/photo-1628840042765-356cda07504e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", caption: "Blitz Action" },
+                        { id: 303, url: "https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", caption: "Champions" },
+                        { id: 304, url: "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", caption: "Closing Ceremony" }
+                    ]
+                },
+                {
+                    id: 4,
+                    name: "State Championship 2023",
+                    photos: [
+                        { id: 401, url: "https://images.unsplash.com/photo-1560174038-da43ac74f01b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", caption: "State Level Competition" },
+                        { id: 402, url: "https://images.unsplash.com/photo-1611195974226-ef4f6ab0f4e9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", caption: "Top Players" },
+                        { id: 403, url: "https://images.unsplash.com/photo-1604078883732-725b6c2f0e30?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", caption: "Award Ceremony" }
+                    ]
+                }
+            ];
+
+            localStorage.setItem('jca_gallery_v2', JSON.stringify(defaultGalleryData));
+            document.getElementById('message').textContent = '✅ Gallery V2 data reset successfully! 4 tournaments loaded.';
+            showCurrentData();
+        }
+
+        // Clear all
+        function clearAllData() {
+            localStorage.removeItem('jca_gallery_v2');
+            document.getElementById('message').textContent = '✅ All gallery V2 data cleared!';
+            showCurrentData();
+        }
+
+        // Initial load
+        showCurrentData();
+    </script>
+</body>
+
+</html>

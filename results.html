@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results & Certificates | Jhajjar Chess Association</title>
+    <link rel="stylesheet" href="css/style.css?v=3">
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+
+<body class="luxury-dark-theme">
+
+    <div class="cursor-follower"></div>
+
+    <!-- Header -->
+    <header class="glass-header">
+        <div class="container navbar">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="JCA Logo">
+                Jhajjar Chess Association
+            </a>
+            <div class="mobile-menu-btn"><i class="fa-solid fa-bars"></i></div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="calendar.html">Tournaments</a></li>
+                    <li><a href="results.html" class="active">Results</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="top-players.html">Top Talents</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="section-padding" style="padding-top: 150px;">
+        <div class="container text-center">
+            <h1 class="glitch-text" style="font-size: 4rem;">RESULTS & <span class="text-gold">CERTIFICATES</span></h1>
+            <p style="color: var(--text-muted); font-size: 1.2rem;">Check your performance and download your
+                achievements.</p>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="section-padding">
+        <div class="container">
+            <h2 class="section-title text-center">TOURNAMENT <span class="text-gold">RESULTS</span></h2>
+            <div class="glass-panel">
+                <table style="width: 100%; border-collapse: collapse; color: #fff;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left;">
+                            <th style="padding: 20px; color: var(--primary-gold);">Tournament</th>
+                            <th style="padding: 20px; color: var(--primary-gold);">Date</th>
+                            <th style="padding: 20px; color: var(--primary-gold);">Category</th>
+                            <th style="padding: 20px; color: var(--primary-gold);">Link</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-table-body">
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 20px;">District Championship 2023</td>
+                            <td style="padding: 20px; color: var(--text-muted);">Nov 15, 2023</td>
+                            <td style="padding: 20px;">Open</td>
+                            <td style="padding: 20px;"><a href="#" class="text-gold"><i class="fa-solid fa-eye"></i>
+                                    View Result</a></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 20px;">Summer Rapid</td>
+                            <td style="padding: 20px; color: var(--text-muted);">June 20, 2023</td>
+                            <td style="padding: 20px;">U-19</td>
+                            <td style="padding: 20px;"><a href="#" class="text-gold"><i class="fa-solid fa-eye"></i>
+                                    View Result</a></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 20px;">School League</td>
+                            <td style="padding: 20px; color: var(--text-muted);">April 10, 2023</td>
+                            <td style="padding: 20px;">U-14</td>
+                            <td style="padding: 20px;"><a href="#" class="text-gold"><i class="fa-solid fa-eye"></i>
+                                    View Result</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certificates Section -->
+    <section class="section-padding" style="padding-top: 0;">
+        <div class="container">
+            <h2 class="section-title text-center">DOWNLOAD <span class="text-gold">CERTIFICATES</span></h2>
+            <div class="glass-panel">
+                <table style="width: 100%; border-collapse: collapse; color: #fff;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left;">
+                            <th style="padding: 20px; color: var(--primary-gold);">Tournament</th>
+                            <th style="padding: 20px; color: var(--primary-gold);">Date</th>
+                            <th style="padding: 20px; color: var(--primary-gold);">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="certificates-table-body">
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 20px;">District Championship 2023</td>
+                            <td style="padding: 20px; color: var(--text-muted);">Nov 15, 2023</td>
+                            <td style="padding: 20px;"><a href="#" class="btn btn-glass"
+                                    style="padding: 10px 20px; font-size: 0.8rem;"><i class="fa-solid fa-download"></i>
+                                    Download</a></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 20px;">Summer Rapid</td>
+                            <td style="padding: 20px; color: var(--text-muted);">June 20, 2023</td>
+                            <td style="padding: 20px;"><a href="#" class="btn btn-glass"
+                                    style="padding: 10px 20px; font-size: 0.8rem;"><i class="fa-solid fa-download"></i>
+                                    Download</a></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 20px;">School League</td>
+                            <td style="padding: 20px; color: var(--text-muted);">April 10, 2023</td>
+                            <td style="padding: 20px;"><a href="#" class="btn btn-glass"
+                                    style="padding: 10px 20px; font-size: 0.8rem;"><i class="fa-solid fa-download"></i>
+                                    Download</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>Jhajjar Chess Association</h3>
+                    <p>Empowering minds through the royal game. Affiliated with Haryana Chess Association.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="calendar.html">Calendar</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Info</h3>
+                    <p><i class="fa-solid fa-location-dot"></i> Sports Complex, Jhajjar</p>
+                    <p><i class="fa-solid fa-envelope"></i> info@jhajjarchess.com</p>
+                    <p><i class="fa-solid fa-phone"></i> +91 98765 43210</p>
+                </div>
+            </div>
+            <!-- Developer Credits -->
+            <div
+                style="margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 10px;">
+                    Developed by</p>
+                <h4 style="color: var(--primary-gold); font-size: 1.2rem; margin-bottom: 15px; letter-spacing: 2px;">
+                    WEBXDEVELOPER</h4>
+                <div
+                    style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; color: var(--text-muted); font-size: 0.85rem;">
+                    <p><i class="fa-solid fa-phone" style="color: var(--primary-gold); margin-right: 5px;"></i> +91
+                        9911298836 | +91 8307136089</p>
+                    <p><i class="fa-solid fa-envelope" style="color: var(--primary-gold); margin-right: 5px;"></i>
+                        yasshmittal3@gmail.com | sukritikashyap0028@gmail.com</p>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 10px;">
+                    <i class="fa-solid fa-location-dot" style="color: var(--primary-gold); margin-right: 5px;"></i>
+                    BH-73 East Shalimar Bagh, Delhi - 110088
+                </p>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 Jhajjar Chess Association. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
