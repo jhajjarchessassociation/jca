@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script>
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Gallery | JCA Admin</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: #050505;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: rgba(20, 20, 20, 0.95);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .admin-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 50px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .admin-brand img {
+            width: 40px;
+        }
+
+        .admin-brand h3 {
+            font-size: 1.2rem;
+            color: var(--primary-gold);
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            margin-bottom: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--primary-gold);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .logout-btn {
+            margin-top: auto;
+            padding: 15px;
+            background: rgba(255, 50, 50, 0.1);
+            color: #ff4444;
+            border: 1px solid rgba(255, 50, 50, 0.2);
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 50, 50, 0.2);
+        }
+
+        .main-content {
+            margin-left: 280px;
+            flex-grow: 1;
+            padding: 40px;
+        }
+
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title h1 {
+            font-size: 2rem;
+            color: #fff;
+        }
+
+        .page-title p {
+            color: var(--text-muted);
+        }
+
+        .admin-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-gold);
+            outline: none;
+        }
+
+        .btn-save {
+            background: var(--primary-gold);
+            color: #000;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Tournament Section Styles */
+        .tournament-block {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            transition: all 0.3s;
+        }
+
+        .tournament-block:hover {
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+
+        .tournament-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .tournament-title {
+            font-size: 1.4rem;
+            color: var(--primary-gold);
+            font-weight: 600;
+        }
+
+        .tournament-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #fff;
+        }
+
+        .btn-move {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-move:hover {
+            background: var(--primary-gold);
+            color: #000;
+        }
+
+        .btn-delete {
+            background: rgba(255, 50, 50, 0.1);
+            color: #ff4444;
+        }
+
+        .btn-delete:hover {
+            background: rgba(255, 50, 50, 0.2);
+        }
+
+        /* Photo Grid */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .photo-card {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-delete {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 25px;
+            height: 25px;
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .photo-card:hover .photo-delete {
+            opacity: 1;
+        }
+
+        /* Add Photo Area */
+        .add-photo-area {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .add-photo-area .form-group {
+            margin-bottom: 0;
+            flex-grow: 1;
+        }
+
+        .btn-add-photo {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            height: 45px;
+        }
+
+        .btn-add-photo:hover {
+            background: var(--primary-gold);
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="admin-brand">
+            <img src="../logo.png" alt="JCA">
+            <h3>JCA ADMIN</h3>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge-high"></i>
+                    Dashboard</a></li>
+            <li class="nav-item"><a href="manage-news.html" class="nav-link"><i class="fa-solid fa-newspaper"></i>
+                    Latest Intel</a></li>
+            <li class="nav-item"><a href="manage-tournaments.html" class="nav-link"><i
+                        class="fa-solid fa-chess-board"></i> Tournaments</a></li>
+            <li class="nav-item"><a href="manage-players.html" class="nav-link"><i
+                        class="fa-solid fa-users-viewfinder"></i> Top Talents</a></li>
+            <li class="nav-item"><a href="manage-executives.html" class="nav-link"><i class="fa-solid fa-user-tie"></i>
+                    Executives</a></li>
+            <li class="nav-item"><a href="manage-results.html" class="nav-link"><i class="fa-solid fa-trophy"></i>
+                    Results</a></li>
+            <li class="nav-item"><a href="manage-certificates.html" class="nav-link"><i
+                        class="fa-solid fa-certificate"></i> Certificates</a></li>
+            <li class="nav-item"><a href="manage-gallery.html" class="nav-link active"><i
+                        class="fa-solid fa-images"></i> Gallery</a></li>
+        </ul>
+        <a href="#" id="logoutBtn" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout System</a>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="header-bar">
+            <div class="page-title">
+                <h1>Manage Gallery</h1>
+                <p>Create tournaments and upload photos.</p>
+            </div>
+        </div>
+
+        <!-- Create New Tournament -->
+        <div class="admin-card">
+            <h3 style="color: var(--primary-gold); margin-bottom: 20px;">Create New Gallery Album</h3>
+            <div style="display: flex; gap: 15px; align-items: flex-end;">
+                <div class="form-group" style="flex-grow: 1; margin-bottom: 0;">
+                    <label>Tournament Name</label>
+                    <input type="text" id="newTournamentName" placeholder="e.g. Winter Chess Championship 2024">
+                </div>
+                <button onclick="createTournament()" class="btn-save" style="height: 45px;">
+                    <i class="fa-solid fa-plus"></i> Create Album
+                </button>
+            </div>
+        </div>
+
+        <!-- Gallery List -->
+        <div id="galleryContainer">
+            <!-- Tournaments will be loaded here -->
+        </div>
+    </main>
+
+    <script>
+        const defaultGalleryData = [
+            {
+                id: 1,
+                name: "District Championship 2024",
+                photos: [
+                    { id: 101, url: "https://images.unsplash.com/photo-1529699211952-734e80c4d42b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", caption: "Opening" },
+                    { id: 102, url: "https://images.unsplash.com/photo-1586165368502-1bad197a6461?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", caption: "Finals" }
+                ]
+            },
+            {
+                id: 2,
+                name: "Summer Rapid 2024",
+                photos: [
+                    { id: 201, url: "https://images.unsplash.com/photo-1580541832626-2a7131ee809f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", caption: "Action" }
+                ]
+            }
+        ];
+
+        // Initialize Data
+        function initData() {
+            let data = localStorage.getItem('jca_gallery_v2');
+            if (!data) {
+                localStorage.setItem('jca_gallery_v2', JSON.stringify(defaultGalleryData));
+                return defaultGalleryData;
+            }
+            return JSON.parse(data);
+        }
+
+        // Render Gallery
+        function renderGallery() {
+            const data = initData();
+            const container = document.getElementById('galleryContainer');
+            container.innerHTML = '';
+
+            data.forEach((tournament, index) => {
+                const block = document.createElement('div');
+                block.className = 'tournament-block';
+
+                // Header with Actions
+                let headerHtml = `
+            <div class="tournament-header">
+                <div class="tournament-title">${tournament.name} <span style="font-size:0.8rem; color:#666;">(${tournament.photos.length} photos)</span></div>
+                <div class="tournament-actions">
+                    <button class="btn-icon btn-move" onclick="moveTournament(${index}, -1)" title="Move Up" ${index === 0 ? 'disabled style="opacity:0.5"' : ''}>
+                        <i class="fa-solid fa-arrow-up"></i>
+                    </button>
+                    <button class="btn-icon btn-move" onclick="moveTournament(${index}, 1)" title="Move Down" ${index === data.length - 1 ? 'disabled style="opacity:0.5"' : ''}>
+                        <i class="fa-solid fa-arrow-down"></i>
+                    </button>
+                    <button class="btn-icon btn-delete" onclick="deleteTournament(${index})" title="Delete Album">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            `;
+
+                // Add Photo Form
+                let addFormHtml = `
+            <div class="add-photo-area">
+                <div class="form-group">
+                    <input type="text" id="url-${tournament.id}" placeholder="Image URL (https://...)">
+                </div>
+                <div class="form-group">
+                    <input type="text" id="cap-${tournament.id}" placeholder="Caption">
+                </div>
+                <button class="btn-add-photo" onclick="addPhoto(${tournament.id})">
+                    <i class="fa-solid fa-upload"></i> Add
+                </button>
+            </div>
+            `;
+
+                // Photos Grid
+                let photosHtml = '<div class="photo-grid">';
+                if (tournament.photos.length === 0) {
+                    photosHtml += '<p style="color:#666; grid-column: 1/-1; text-align:center;">No photos yet.</p>';
+                } else {
+                    tournament.photos.forEach((photo, pIndex) => {
+                        photosHtml += `
+                    <div class="photo-card">
+                        <img src="${photo.url}" alt="${photo.caption}">
+                        <button class="photo-delete" onclick="deletePhoto(${tournament.id}, ${photo.id})">
+                            <i class="fa-solid fa-times"></i>
+                        </button>
+                        <div style="position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.7); color:#fff; font-size:0.8rem; padding:5px; text-align:center;">
+                            ${photo.caption}
+                        </div>
+                    </div>
+                `;
+                    });
+                }
+                photosHtml += '</div>';
+
+                block.innerHTML = headerHtml + addFormHtml + photosHtml;
+                container.appendChild(block);
+            });
+        }
+
+        // --- Actions ---
+
+        window.createTournament = function () {
+            const nameInput = document.getElementById('newTournamentName');
+            const name = nameInput.value.trim();
+            if (!name) return alert("Please enter a tournament name");
+
+            const data = initData();
+            data.unshift({ // Add to top
+                id: Date.now(),
+                name: name,
+                photos: []
+            });
+
+            localStorage.setItem('jca_gallery_v2', JSON.stringify(data));
+            nameInput.value = '';
+            renderGallery();
+        };
+
+        window.deleteTournament = function (index) {
+            if (confirm("Are you sure? This will delete the album and all its photos.")) {
+                const data = initData();
+                data.splice(index, 1);
+                localStorage.setItem('jca_gallery_v2', JSON.stringify(data));
+                renderGallery();
+            }
+        };
+
+        window.moveTournament = function (index, direction) {
+            const data = initData();
+            if (direction === -1 && index > 0) {
+                [data[index], data[index - 1]] = [data[index - 1], data[index]];
+            } else if (direction === 1 && index < data.length - 1) {
+                [data[index], data[index + 1]] = [data[index + 1], data[index]];
+            }
+            localStorage.setItem('jca_gallery_v2', JSON.stringify(data));
+            renderGallery();
+        };
+
+        window.addPhoto = function (tournamentId) {
+            const urlInput = document.getElementById(`url-${tournamentId}`);
+            const capInput = document.getElementById(`cap-${tournamentId}`);
+            const url = urlInput.value.trim();
+            const caption = capInput.value.trim();
+
+            if (!url) return alert("Please enter an image URL");
+
+            const data = initData();
+            const tournament = data.find(t => t.id === tournamentId);
+            if (tournament) {
+                tournament.photos.push({
+                    id: Date.now(),
+                    url: url,
+                    caption: caption
+                });
+                localStorage.setItem('jca_gallery_v2', JSON.stringify(data));
+                renderGallery();
+            }
+        };
+
+        window.deletePhoto = function (tournamentId, photoId) {
+            if (confirm("Delete this photo?")) {
+                const data = initData();
+                const tournament = data.find(t => t.id === tournamentId);
+                if (tournament) {
+                    tournament.photos = tournament.photos.filter(p => p.id !== photoId);
+                    localStorage.setItem('jca_gallery_v2', JSON.stringify(data));
+                    renderGallery();
+                }
+            }
+        };
+
+        // Logout Handler
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('jca_admin_session');
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Initial Render
+        renderGallery();
+    </script>
+</body>
+
+</html>

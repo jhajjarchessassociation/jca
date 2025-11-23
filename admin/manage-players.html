@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script>
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Top Talents | JCA Admin</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: #050505;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: rgba(20, 20, 20, 0.95);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .admin-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 50px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .admin-brand img {
+            width: 40px;
+        }
+
+        .admin-brand h3 {
+            font-size: 1.2rem;
+            color: var(--primary-gold);
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            margin-bottom: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--primary-gold);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .logout-btn {
+            margin-top: auto;
+            padding: 15px;
+            background: rgba(255, 50, 50, 0.1);
+            color: #ff4444;
+            border: 1px solid rgba(255, 50, 50, 0.2);
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 50, 50, 0.2);
+        }
+
+        .main-content {
+            margin-left: 280px;
+            flex-grow: 1;
+            padding: 40px;
+        }
+
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title h1 {
+            font-size: 2rem;
+            color: #fff;
+        }
+
+        .page-title p {
+            color: var(--text-muted);
+        }
+
+        .admin-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary-gold);
+            outline: none;
+        }
+
+        .btn-save {
+            background: var(--primary-gold);
+            color: #000;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.3s;
+        }
+
+        .list-item:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .item-info img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-gold);
+        }
+
+        .item-info h4 {
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .item-info p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-edit {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--primary-gold);
+        }
+
+        .btn-delete {
+            background: rgba(255, 50, 50, 0.1);
+            color: #ff4444;
+        }
+
+        .btn-icon:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="admin-brand">
+            <img src="../logo.png" alt="JCA">
+            <h3>JCA ADMIN</h3>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge-high"></i>
+                    Dashboard</a></li>
+            <li class="nav-item"><a href="manage-news.html" class="nav-link"><i class="fa-solid fa-newspaper"></i>
+                    Latest Intel</a></li>
+            <li class="nav-item"><a href="manage-tournaments.html" class="nav-link"><i
+                        class="fa-solid fa-chess-board"></i> Tournaments</a></li>
+            <li class="nav-item"><a href="manage-players.html" class="nav-link active"><i
+                        class="fa-solid fa-users-viewfinder"></i> Top Talents</a></li>
+            <li class="nav-item"><a href="manage-executives.html" class="nav-link"><i class="fa-solid fa-user-tie"></i>
+                    Executives</a></li>
+            <li class="nav-item"><a href="manage-results.html" class="nav-link"><i class="fa-solid fa-trophy"></i>
+                    Results</a></li>
+            <li class="nav-item"><a href="manage-certificates.html" class="nav-link"><i
+                        class="fa-solid fa-certificate"></i> Certificates</a></li>
+            <li class="nav-item"><a href="manage-gallery.html" class="nav-link"><i class="fa-solid fa-images"></i>
+                    Gallery</a></li>
+        </ul>
+        <a href="#" id="logoutBtn" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout System</a>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="header-bar">
+            <div class="page-title">
+                <h1>Manage Top Talents</h1>
+                <p>Showcase the best players of the association.</p>
+            </div>
+        </div>
+
+        <!-- Add Player Form -->
+        <div class="admin-card">
+            <h3 style="color: var(--primary-gold); margin-bottom: 20px;">Add New Talent</h3>
+            <form id="playerForm">
+                <input type="hidden" id="pId">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Player Name</label>
+                        <input type="text" id="name" placeholder="e.g. Aarav Sharma" required>
+                    </div>
+                    <div class="form-group">
+                        <label>FIDE Rating</label>
+                        <input type="text" id="rating" placeholder="e.g. 1850" required>
+                    </div>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Title/Achievement</label>
+                        <input type="text" id="title" placeholder="e.g. District Champion" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Image URL</label>
+                        <input type="text" id="image" placeholder="https://..." required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-save"><i class="fa-solid fa-save"></i> Save Player</button>
+                <button type="button" id="cancelBtn" class="btn-save"
+                    style="background: #333; color: #fff; display: none; margin-left: 10px;">Cancel</button>
+            </form>
+        </div>
+
+        <!-- Player List -->
+        <div class="admin-card">
+            <h3 style="color: #fff; margin-bottom: 20px;">Current Top Talents</h3>
+            <div id="playerList">
+                <!-- Items will be loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Default Data
+        const defaultPlayers = [
+            { id: 1, name: "Aarav Sharma", rating: "1850", title: "District Champion", image: "https://randomuser.me/api/portraits/men/32.jpg" },
+            { id: 2, name: "Sneha Gupta", rating: "1720", title: "State Junior Runner-up", image: "https://randomuser.me/api/portraits/women/44.jpg" },
+            { id: 3, name: "Rohan Verma", rating: "1650", title: "U-15 Winner", image: "https://randomuser.me/api/portraits/men/12.jpg" }
+        ];
+
+        // Load Data
+        function loadPlayers() {
+            let data = JSON.parse(localStorage.getItem('jca_players_data'));
+            if (!data || data.length === 0) {
+                data = defaultPlayers;
+                localStorage.setItem('jca_players_data', JSON.stringify(data));
+            }
+
+            const list = document.getElementById('playerList');
+            list.innerHTML = '';
+
+            data.forEach(item => {
+                list.innerHTML += `
+            <div class="list-item">
+                <div class="item-info">
+                    <img src="${item.image}" alt="${item.name}">
+                    <div>
+                        <h4>${item.name}</h4>
+                        <p>${item.title} | Rating: ${item.rating}</p>
+                    </div>
+                </div>
+                <div class="item-actions">
+                    <button class="btn-icon btn-edit" onclick="editItem(${item.id})"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn-icon btn-delete" onclick="deleteItem(${item.id})"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            </div>
+            `;
+            });
+        }
+
+        // Save Data
+        document.getElementById('playerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const id = document.getElementById('pId').value;
+            const name = document.getElementById('name').value;
+            const rating = document.getElementById('rating').value;
+            const title = document.getElementById('title').value;
+            const image = document.getElementById('image').value;
+
+            let data = JSON.parse(localStorage.getItem('jca_players_data')) || defaultPlayers;
+
+            if (id) {
+                const index = data.findIndex(n => n.id == id);
+                if (index !== -1) {
+                    data[index] = { id: parseInt(id), name, rating, title, image };
+                }
+            } else {
+                const newId = Date.now();
+                data.push({ id: newId, name, rating, title, image });
+            }
+
+            localStorage.setItem('jca_players_data', JSON.stringify(data));
+            resetForm();
+            loadPlayers();
+            alert('Player Saved Successfully!');
+        });
+
+        // Edit Function
+        window.editItem = function (id) {
+            let data = JSON.parse(localStorage.getItem('jca_players_data')) || defaultPlayers;
+            const item = data.find(n => n.id == id);
+            if (item) {
+                document.getElementById('pId').value = item.id;
+                document.getElementById('name').value = item.name;
+                document.getElementById('rating').value = item.rating;
+                document.getElementById('title').value = item.title;
+                document.getElementById('image').value = item.image;
+
+                document.querySelector('.btn-save').innerHTML = '<i class="fa-solid fa-check"></i> Update Player';
+                document.getElementById('cancelBtn').style.display = 'inline-block';
+                window.scrollTo(0, 0);
+            }
+        };
+
+        // Delete Function
+        window.deleteItem = function (id) {
+            if (confirm('Are you sure you want to delete this player?')) {
+                let data = JSON.parse(localStorage.getItem('jca_players_data')) || defaultPlayers;
+                data = data.filter(n => n.id != id);
+                localStorage.setItem('jca_players_data', JSON.stringify(data));
+                loadPlayers();
+            }
+        };
+
+        // Reset Form
+        function resetForm() {
+            document.getElementById('playerForm').reset();
+            document.getElementById('pId').value = '';
+            document.querySelector('.btn-save').innerHTML = '<i class="fa-solid fa-save"></i> Save Player';
+            document.getElementById('cancelBtn').style.display = 'none';
+        }
+
+        document.getElementById('cancelBtn').addEventListener('click', resetForm);
+
+        // Logout Handler
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('jca_admin_session');
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Initial Load
+        loadPlayers();
+    </script>
+</body>
+
+</html>
